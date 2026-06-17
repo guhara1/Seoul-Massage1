@@ -218,9 +218,19 @@ GU_REGION = {
     "dobong-gu-chuljangmassage": "강북·노원·도봉권",
     "eunpyeong-gu-chuljangmassage": "은평권",
     "jungnang-gu-chuljangmassage": "중랑권",
+    "seongbuk-gu-chuljangmassage": "강북·노원·도봉권",
 }
 
 _STATION_GROUP_MAP = {name: stations for name, stations in STATION_GROUPS}
+
+
+def register_stations(full_groups):
+    """전체 지하철역 권역 그룹을 등록해 STATION_GROUPS 및 파생 맵을 갱신한다.
+    (stations_gen 이 1~9호선 서울 전체 역으로 확장한 그룹을 주입)"""
+    global STATION_GROUPS, _STATION_GROUP_MAP, _STATION_NAME_TO_SLUG
+    STATION_GROUPS = full_groups
+    _STATION_GROUP_MAP = {name: sts for name, sts in STATION_GROUPS}
+    _STATION_NAME_TO_SLUG = {n: s for _, sts in STATION_GROUPS for n, s in sts}
 
 
 def gu_stations(gu_slug, limit=3):
