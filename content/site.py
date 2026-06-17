@@ -380,9 +380,9 @@ def dong_related_block(gu_slug, gu_name, dong_name):
     sib_anchors = ["{0} 출장마사지 방문 예약 안내", "{0} 홈타이 당일 예약 가능 지역"]
     for idx, (d, s) in enumerate(sib):
         pairs.append((sib_anchors[idx].format(d), dong_url(s)))
-    st_anchors = ["{0} 출장마사지·홈타이 방문 안내", "{0} 근처 출장 홈타이 예약 정보"]
-    for idx, (n, s) in enumerate(st):
-        pairs.append((st_anchors[idx].format(n), station_url(s)))
+    for n, s in st:
+        # 역 이름 앵커에는 키워드를 붙이지 않는다(도어웨이 방지)
+        pairs.append((n, station_url(s)))
     pairs.append(("서울 전지역 방문 출장마사지·홈타이 예약 안내", _HUB))
     return related_links_html(
         f"{dong_name} 함께 보면 좋은 출장마사지·홈타이 안내", pairs
@@ -391,10 +391,8 @@ def dong_related_block(gu_slug, gu_name, dong_name):
 
 def district_related_block(gu_slug, gu_name):
     """자치구 페이지용 롱테일 키워드 내부링크 블록(권역 역세권 + 허브)."""
-    pairs = [
-        (f"{n} 출장마사지·홈타이 방문 안내", station_url(s))
-        for n, s in gu_stations(gu_slug, 4)
-    ]
+    # 역 이름 앵커에는 키워드를 붙이지 않는다(도어웨이 방지)
+    pairs = [(n, station_url(s)) for n, s in gu_stations(gu_slug, 4)]
     pairs.append((f"{gu_name} 행정동별 출장마사지 방문 가능 지역", _HUB + "#districts"))
     pairs.append(("서울 전지역 출장마사지·홈타이 예약 안내", _HUB))
     return related_links_html(
@@ -424,7 +422,8 @@ def zone_related_block(zone_slug, zone_name):
     for n in ZONE_STATIONS.get(zone_slug, []):
         s = _STATION_NAME_TO_SLUG.get(n)
         if s:
-            pairs.append((f"{n} 출장마사지·홈타이 방문 안내", station_url(s)))
+            # 역 이름 앵커에는 키워드를 붙이지 않는다(도어웨이 방지)
+            pairs.append((n, station_url(s)))
     pairs.append(("서울 자치구별 출장마사지 방문 가능 지역", _HUB + "#districts"))
     pairs.append(("서울 전지역 방문 출장마사지·홈타이 예약 안내", _HUB))
     return related_links_html(
@@ -442,9 +441,8 @@ def station_related_block(station_slug, station_name):
     seed = sum(ord(c) for c in station_slug)
     sib = [(n, s) for n, s in members if s != station_slug]
     sib = _pick2(sib, seed) if len(sib) > 2 else sib
-    pairs = [
-        (f"{n} 출장마사지 홈타이 방문 예약", station_url(s)) for n, s in sib
-    ]
+    # 역 이름 앵커에는 키워드를 붙이지 않는다(도어웨이 방지)
+    pairs = [(n, station_url(s)) for n, s in sib]
     pairs.append((f"{region} 전체 역세권 출장마사지 안내", _HUB + "#stations"))
     pairs.append(("서울 전지역 방문 출장마사지·홈타이 예약 안내", _HUB))
     return related_links_html(

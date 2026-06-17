@@ -302,7 +302,10 @@ def render_page(page: dict) -> str:
     <div class="container footer-bottom-inner">
       <p class="footer-copy">&copy; {BRAND}. All rights reserved.</p>
       <p class="footer-note">서울특별시 전지역을 안내하는 건전한 방문 관리 사이트이며, 불법적인 요청은 어떤 경우에도 응하지 않습니다.</p>
-      <a class="footer-made" href="tel:{PHONE}" rel="nofollow">예약문의 {PHONE_DISPLAY}</a>
+      <div class="footer-biz">
+        <a class="footer-biz-btn biz-build" href="https://t.me/googleseolab" target="_blank" rel="noopener nofollow">웹사이트 제작문의</a>
+        <a class="footer-biz-btn biz-ad" href="https://t.me/googleseolab" target="_blank" rel="noopener nofollow">광고문의</a>
+      </div>
     </div>
   </div>
 </footer>
