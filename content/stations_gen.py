@@ -397,6 +397,11 @@ def _body(name, gu_name, lines, feature, region, slug):
         f"처음이신 분도 부담 없이 시작하실 수 있도록 {name} 방문 전 진행 순서와 준비물을 전화로 차근차근 설명드립니다. 무리한 시술은 권하지 않으며 컨디션에 맞춰 강도를 조절합니다.",
         f"{name}에서 정기적으로 받으시는 분들은 회차마다 컨디션이 다른 만큼 그날의 상태를 말씀해 주시면 부위별 비중을 달리해 진행합니다. 작은 요청도 미리 알려주시면 반영합니다.",
     ], slug, 16)
+    closing = _pick([
+        f"{name} 출장마사지·홈타이는 전화 한 통이면 예약이 끝납니다. {gu_name} 어디든 안내된 위생·안전 기준 안에서 정성껏 방문 관리해 드리니 편하게 문의해 주세요.",
+        f"{gu_name} {name} 인근에서 믿고 받을 수 있는 방문 관리를 찾으신다면, 위치와 희망 시간만 알려주세요. 가능 여부와 도착 시간을 빠르게 안내해 드립니다.",
+        f"{name}에서의 첫 방문도, 정기 관리도 같은 기준으로 정성껏 진행합니다. {gu_name} 전역 어디서든 편하신 시간에 문의해 주시면 친절히 안내해 드리겠습니다.",
+    ], slug, 19)
 
     return _fix_particles(f"""
 <p class="lead">{intro} {note}</p>
@@ -421,6 +426,7 @@ def _body(name, gu_name, lines, feature, region, slug):
 <p><strong>Q. 코스와 시간은 어떻게 정하나요?</strong><br>{faq_b}</p>
 <p><strong>Q. 야간·동시 예약도 되나요?</strong><br>{faq_c}</p>
 </section>
+<p class="station-closing">{closing}</p>
 """, name, lines, gu_name, region)
 
 
@@ -443,7 +449,7 @@ def build():
             "h1": f"{name} 출장마사지·홈타이 안내",
             "body": body + station_related_block(slug, name) + PRICING + _CTA,
             "breadcrumb": [
-                ("역세권별 안내", "/seoul-chuljangmassage/#stations"),
+                ("역세권별 안내", "/#stations"),
                 (gu_name, district_url(gu_slug)),
                 (name, None),
             ],

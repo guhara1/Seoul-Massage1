@@ -350,7 +350,7 @@ def dong_nav_section(gu_slug, gu_name):
     )
 
 
-_HUB = "/seoul-chuljangmassage/"
+_HUB = "/"
 
 
 def _pick2(items, seed):
@@ -452,20 +452,20 @@ def station_related_block(station_slug, station_name):
 
 # 상단 메뉴
 NAV = [
-    ("홈", "/seoul-chuljangmassage/", []),
-    ("출장마사지 안내", "/seoul-chuljangmassage/#service", [
-        ("서비스 안내", "/seoul-chuljangmassage/#service"),
-        ("전지역 방문 가능", "/seoul-chuljangmassage/#coverage"),
-        ("예약 전 확인 기준", "/seoul-chuljangmassage/#check"),
+    ("홈", "/", []),
+    ("출장마사지 안내", "/#service", [
+        ("서비스 안내", "/#service"),
+        ("전지역 방문 가능", "/#coverage"),
+        ("예약 전 확인 기준", "/#check"),
         ("홈타이 이용 가이드", "/hometai-guide/"),
     ]),
-    ("자치구별 안내", "/seoul-chuljangmassage/#districts", [
+    ("자치구별 안내", "/#districts", [
         (name, district_url(slug)) for slug, name in DISTRICTS
     ]),
-    ("역세권별 안내", "/seoul-chuljangmassage/#stations", [
+    ("역세권별 안내", "/#stations", [
         (name, station_url(slug)) for slug, name in STATIONS_MENU
-    ] + [("＋ 서울 전체 역세권 보기", "/seoul-chuljangmassage/#stations")]),
-    ("생활권별 안내", "/seoul-chuljangmassage/#zones", [
+    ] + [("＋ 서울 전체 역세권 보기", "/#stations")]),
+    ("생활권별 안내", "/#zones", [
         (name, zone_url(slug)) for slug, name in ZONES
     ]),
     ("예약안내", "/reservation/", [

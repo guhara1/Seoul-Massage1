@@ -288,7 +288,7 @@ def _make(dong, slug, gu_name, gu_slug, subway, landmarks, trait):
         "body": _body(dong, gu_name, subway, landmarks, trait, slug)
         + dong_related_block(gu_slug, gu_name, dong) + PRICING + _CTA,
         "breadcrumb": [
-            ("자치구별 안내", "/seoul-chuljangmassage/#districts"),
+            ("자치구별 안내", "/#districts"),
             (gu_name, f"/seoul/{gu_slug}/"),
             (dong, None),
         ],

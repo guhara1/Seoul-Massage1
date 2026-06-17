@@ -14,7 +14,7 @@ def _zone(slug, name, title, desc, body):
         "desc": desc,
         "h1": f"{name} 출장마사지·홈타이 안내",
         "body": body + zone_related_block(slug, name) + PRICING + _CTA,
-        "breadcrumb": [("생활권별 안내", "/seoul-chuljangmassage/#zones"), (name, None)],
+        "breadcrumb": [("생활권별 안내", "/#zones"), (name, None)],
     }
 
 

@@ -358,22 +358,11 @@ def build() -> None:
     # .nojekyll (GitHub Pages)
     open(os.path.join(ROOT, ".nojekyll"), "w").close()
 
-    # 루트 index.html — 메인 허브(/seoul-chuljangmassage/)로 리다이렉트
-    main_url = "/seoul-chuljangmassage/"
-    with open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8") as f:
-        f.write(
-            "<!DOCTYPE html>\n"
-            '<html lang="ko">\n<head>\n'
-            '<meta charset="utf-8">\n'
-            '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-            f'<title>{BRAND} 서울 출장마사지·홈타이 안내</title>\n'
-            f'<link rel="canonical" href="{BASE_URL.rstrip("/")}{main_url}">\n'
-            f'<meta http-equiv="refresh" content="0; url={main_url}">\n'
-            f'<script>location.replace("{main_url}");</script>\n'
-            "</head>\n<body>\n"
-            f'<p><a href="{main_url}">서울 출장마사지 안내 페이지로 이동</a></p>\n'
-            "</body>\n</html>\n"
-        )
+    # 메인 허브가 루트(/)에서 직접 제공되므로 별도 리다이렉트 스텁은 두지 않는다.
+    # 과거 /seoul-chuljangmassage/ 링크는 Cloudflare _redirects 로 301 처리한다.
+    main_url = "/"
+    with open(os.path.join(ROOT, "_redirects"), "w", encoding="utf-8") as f:
+        f.write("/seoul-chuljangmassage/  /  301\n/seoul-chuljangmassage  /  301\n")
 
     # 404.html — 존재하지 않는 페이지 안내
     nf_links = "\n".join(

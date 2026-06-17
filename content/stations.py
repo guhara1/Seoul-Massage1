@@ -11,7 +11,7 @@ def _station(slug, name, title, desc, body):
         "desc": desc,
         "h1": f"{name} 출장마사지·홈타이 안내",
         "body": body + station_related_block(slug, name) + PRICING + _CTA,
-        "breadcrumb": [("역세권별 안내", "/seoul-chuljangmassage/#stations"), (name, None)],
+        "breadcrumb": [("역세권별 안내", "/#stations"), (name, None)],
     }
 
 

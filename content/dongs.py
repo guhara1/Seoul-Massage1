@@ -12,7 +12,7 @@ def _dong(slug, name, gu_name, gu_slug, title, desc, body):
         "h1": f"{name} 출장마사지·홈타이 안내",
         "body": body + dong_related_block(gu_slug, gu_name, name) + PRICING + _CTA,
         "breadcrumb": [
-            ("자치구별 안내", "/seoul-chuljangmassage/#districts"),
+            ("자치구별 안내", "/#districts"),
             (gu_name, f"/seoul/{gu_slug}/"),
             (name, None)
         ],

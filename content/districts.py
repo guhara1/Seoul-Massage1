@@ -12,7 +12,7 @@ def _district(slug, name, title, desc, body):
         "desc": desc,
         "h1": f"{name} 출장마사지·홈타이 안내",
         "body": body + dong_nav_section(slug, name) + district_related_block(slug, name) + PRICING + _CTA,
-        "breadcrumb": [("자치구별 안내", "/seoul-chuljangmassage/#districts"), (name, None)],
+        "breadcrumb": [("자치구별 안내", "/#districts"), (name, None)],
     }
 
 
