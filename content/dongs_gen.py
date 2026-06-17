@@ -250,17 +250,18 @@ def _body(dong, gu, subway, landmarks, trait, slug):
 """)
 
 
-# 제목 패턴 풀 — slug 해시로 골라 동마다 다른 제목을 만든다.
+# 제목 패턴 풀 — 모두 '{동} 출장마사지'로 시작하며, 뒷부분만 다르게 골라
+# 동마다 고유한 제목을 만든다.
 def _title(dong, gu, subway, l0, slug):
     return _pick([
         f"{dong} 출장마사지｜{gu} {dong} 홈타이 방문 예약",
-        f"{gu} {dong} 출장마사지·홈타이｜{l0} 인근 방문 관리",
-        f"{dong} 홈타이 출장마사지｜{subway} 방문 안내",
-        f"{dong} 출장마사지 - {gu} {dong} 24시간 방문 홈타이",
-        f"{gu} {dong} 홈타이｜{l0} 일대 출장마사지 안내",
+        f"{dong} 출장마사지·홈타이｜{l0} 인근 방문 관리",
+        f"{dong} 출장마사지｜{subway} {dong} 홈타이 방문 안내",
+        f"{dong} 출장마사지 - {gu} 24시간 방문 홈타이",
+        f"{dong} 출장마사지｜{l0} 일대 홈타이 안내",
         f"{dong} 출장마사지·홈타이 방문｜{gu} 당일 예약",
-        f"{dong} 출장 홈타이｜{subway} {dong} 마사지 안내",
-        f"{gu} {dong} 출장마사지｜{l0}·{subway} 방문 관리",
+        f"{dong} 출장마사지｜{subway} 인근 {dong} 홈타이",
+        f"{dong} 출장마사지｜{l0}·{subway} 방문 관리",
     ], slug, 11)
 
 
