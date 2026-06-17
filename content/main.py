@@ -14,7 +14,8 @@ _ZONE_CARDS = "".join(
     for slug, name in ZONES
 )
 
-_JSONLD = f"""<link rel="preload" as="image" href="/assets/hero.webp" type="image/webp" fetchpriority="high">
+_JSONLD = f"""<meta name="naver-site-verification" content="04ec15247b85c0495f63eaf20712bf3eeab8c136">
+<link rel="preload" as="image" href="/assets/hero.webp" type="image/webp" fetchpriority="high">
 <script type="application/ld+json">
 {{
   "@context": "https://schema.org",
