@@ -63,8 +63,20 @@ def submit(urls):
         data=json.dumps(payload).encode("utf-8"),
         headers={"Content-Type": "application/json; charset=utf-8"},
     )
-    with urllib.request.urlopen(req, timeout=30) as r:
-        print(f"IndexNow {r.status} {r.reason} — {len(urls)} URL 제출")
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            print(f"IndexNow {r.status} {r.reason} — {len(urls)} URL 제출 완료")
+    except urllib.error.HTTPError as e:
+        msg = {
+            400: "잘못된 요청(형식 오류)",
+            403: "키 검증 실패 — 사이트의 키 파일에 접근할 수 없습니다. "
+                 f"브라우저로 {BASE}/{INDEXNOW_KEY}.txt 가 열리는지, "
+                 "Cloudflare 봇 차단(Bot Fight Mode)이 막고 있지 않은지 확인하세요.",
+            422: "URL이 사이트 호스트와 불일치",
+            429: "요청 과다 — 잠시 후 재시도",
+        }.get(e.code, e.reason)
+        print(f"IndexNow {e.code} 실패: {msg}")
+        sys.exit(1)
 
 
 def main():
