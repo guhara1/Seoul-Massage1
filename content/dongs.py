@@ -1,4 +1,5 @@
-from .site import PHONE, PHONE_DISPLAY, BRAND, district_url, station_url, dong_url
+from .site import (PHONE, PHONE_DISPLAY, BRAND, district_url, station_url, dong_url,
+                   dong_related_block)
 from .pricing import PRICING
 
 _CTA = f"""<section class="cta"><h2>예약문의</h2><p>방문 위치와 희망 시간을 알려주시면 가능 여부를 바로 확인해 드립니다.</p><a class="cta-phone" href="tel:{PHONE}">{PHONE_DISPLAY}</a></section>"""
@@ -9,7 +10,7 @@ def _dong(slug, name, gu_name, gu_slug, title, desc, body):
         "title": title,
         "desc": desc,
         "h1": f"{name} 출장마사지·홈타이 안내",
-        "body": body + PRICING + _CTA,
+        "body": body + dong_related_block(gu_slug, gu_name, name) + PRICING + _CTA,
         "breadcrumb": [
             ("자치구별 안내", "/seoul-chuljangmassage/#districts"),
             (gu_name, f"/seoul/{gu_slug}/"),

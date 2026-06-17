@@ -91,6 +91,177 @@ def dong_url(slug):
     return f"/seoul/{slug}-chuljangmassage/"
 
 
+# ────────────────────────────────────────────────
+# 서울 전체 지하철역(67역)을 권역(생활권) 단위로 묶은 목록.
+# 하위 메뉴를 길게 늘리는 대신 본문에서 권역별로 모든 역을 연결한다.
+# (역명, 페이지 slug) — slug 는 -chuljangmassage 접미사를 포함한다.
+# ────────────────────────────────────────────────
+STATION_GROUPS = [
+    ("강남권", [
+        ("강남역", "gangnam-station-chuljangmassage"),
+        ("역삼역", "yeoksam-station-chuljangmassage"),
+        ("선릉역", "seolleung-station-chuljangmassage"),
+        ("삼성역", "samseong-station-chuljangmassage"),
+        ("신논현역", "sinnonhyeon-station-chuljangmassage"),
+        ("논현역", "nonhyeon-station-chuljangmassage"),
+        ("압구정역", "apgujeong-station-chuljangmassage"),
+        ("압구정로데오역", "apgujeong-rodeo-station-chuljangmassage"),
+    ]),
+    ("서초권", [
+        ("교대역", "gyodae-station-chuljangmassage"),
+        ("고속터미널역", "gosok-terminal-station-chuljangmassage"),
+        ("서초역", "seocho-station-chuljangmassage"),
+        ("반포역", "banpo-station-chuljangmassage"),
+    ]),
+    ("송파·강동권", [
+        ("잠실역", "jamsil-station-chuljangmassage"),
+        ("잠실새내역", "jamsil-saenae-station-chuljangmassage"),
+        ("석촌역", "seokchon-station-chuljangmassage"),
+        ("문정역", "munjeong-station-chuljangmassage"),
+        ("가락시장역", "garak-market-station-chuljangmassage"),
+        ("천호역", "cheongho-station-chuljangmassage"),
+    ]),
+    ("관악·동작권", [
+        ("사당역", "sadang-station-chuljangmassage"),
+        ("노량진역", "noryangjin-station-chuljangmassage"),
+        ("흑석역", "heukseok-station-chuljangmassage"),
+        ("신림역", "sinlim-station-chuljangmassage"),
+    ]),
+    ("마포·서대문권", [
+        ("홍대입구역", "hongik-univ-station-chuljangmassage"),
+        ("합정역", "hapjeong-station-chuljangmassage"),
+        ("공덕역", "gongdeok-station-chuljangmassage"),
+        ("마포역", "mapo-station-chuljangmassage"),
+        ("신촌역", "sinchon-station-chuljangmassage"),
+        ("이대역", "idae-station-chuljangmassage"),
+        ("망원역", "mangwon-station-chuljangmassage"),
+    ]),
+    ("영등포·구로·금천권", [
+        ("여의도역", "yeouido-station-chuljangmassage"),
+        ("여의나루역", "yeouinaru-station-chuljangmassage"),
+        ("영등포역", "yeongdeungpo-station-chuljangmassage"),
+        ("영등포구청역", "yeongdeungpo-gu-office-station-chuljangmassage"),
+        ("당산역", "dangsan-station-chuljangmassage"),
+        ("신도림역", "sindorim-station-chuljangmassage"),
+        ("구로디지털단지역", "guro-digital-complex-station-chuljangmassage"),
+        ("가산디지털단지역", "gasan-digital-complex-station-chuljangmassage"),
+    ]),
+    ("양천·강서권", [
+        ("신정역", "sinjeong-station-chuljangmassage"),
+        ("목동역", "mokdong-station-chuljangmassage"),
+        ("마곡역", "magok-station-chuljangmassage"),
+        ("발산역", "balsan-station-chuljangmassage"),
+        ("김포공항역", "gimpo-airport-station-chuljangmassage"),
+    ]),
+    ("도심권(중구·종로)", [
+        ("서울역", "seoul-station-chuljangmassage"),
+        ("시청역", "city-hall-station-chuljangmassage"),
+        ("을지로입구역", "euljiro-entrance-station-chuljangmassage"),
+        ("종로3가역", "jongno3ga-station-chuljangmassage"),
+    ]),
+    ("용산권", [
+        ("용산역", "yongsan-station-chuljangmassage"),
+        ("이태원역", "itaewon-station-chuljangmassage"),
+        ("한남역", "hannam-station-chuljangmassage"),
+        ("한강진역", "hangangjin-station-chuljangmassage"),
+        ("이촌역", "ichon-station-chuljangmassage"),
+    ]),
+    ("성동·광진·동대문권", [
+        ("왕십리역", "wangsimni-station-chuljangmassage"),
+        ("성수역", "seongsu-station-chuljangmassage"),
+        ("건대입구역", "geondae-entrance-station-chuljangmassage"),
+        ("군자역", "gunja-station-chuljangmassage"),
+        ("답십리역", "dapsimni-station-chuljangmassage"),
+        ("청량리역", "cheongnyangni-station-chuljangmassage"),
+    ]),
+    ("강북·노원·도봉권", [
+        ("노원역", "nowon-station-chuljangmassage"),
+        ("도봉산역", "dobongsan-station-chuljangmassage"),
+        ("수유역", "suyu-station-chuljangmassage"),
+        ("길음역", "gireum-station-chuljangmassage"),
+        ("미아역", "mia-station-chuljangmassage"),
+        ("중계역", "junggye-station-chuljangmassage"),
+    ]),
+    ("은평권", [
+        ("불광역", "bulgwang-station-chuljangmassage"),
+        ("연신내역", "yeonsinnae-station-chuljangmassage"),
+    ]),
+    ("중랑권", [
+        ("상봉역", "sangbong-station-chuljangmassage"),
+        ("면목역", "myeonmok-station-chuljangmassage"),
+    ]),
+]
+
+# 자치구 slug → 역세권 권역 키(STATION_GROUPS 의 권역명)
+GU_REGION = {
+    "gangnam-gu-chuljangmassage": "강남권",
+    "seocho-gu-chuljangmassage": "서초권",
+    "songpa-gu-chuljangmassage": "송파·강동권",
+    "gangdong-gu-chuljangmassage": "송파·강동권",
+    "gwanak-gu-chuljangmassage": "관악·동작권",
+    "dongjak-gu-chuljangmassage": "관악·동작권",
+    "mapo-gu-chuljangmassage": "마포·서대문권",
+    "seodaemun-gu-chuljangmassage": "마포·서대문권",
+    "yeongdeungpo-gu-chuljangmassage": "영등포·구로·금천권",
+    "guro-gu-chuljangmassage": "영등포·구로·금천권",
+    "geumcheon-gu-chuljangmassage": "영등포·구로·금천권",
+    "yangcheon-gu-chuljangmassage": "양천·강서권",
+    "gangseo-gu-chuljangmassage": "양천·강서권",
+    "jung-gu-chuljangmassage": "도심권(중구·종로)",
+    "jongno-gu-chuljangmassage": "도심권(중구·종로)",
+    "yongsan-gu-chuljangmassage": "용산권",
+    "seongdong-gu-chuljangmassage": "성동·광진·동대문권",
+    "gwangjin-gu-chuljangmassage": "성동·광진·동대문권",
+    "dongdaemun-gu-chuljangmassage": "성동·광진·동대문권",
+    "gangbuk-gu-chuljangmassage": "강북·노원·도봉권",
+    "nowon-gu-chuljangmassage": "강북·노원·도봉권",
+    "dobong-gu-chuljangmassage": "강북·노원·도봉권",
+    "eunpyeong-gu-chuljangmassage": "은평권",
+    "jungnang-gu-chuljangmassage": "중랑권",
+}
+
+_STATION_GROUP_MAP = {name: stations for name, stations in STATION_GROUPS}
+
+
+def gu_stations(gu_slug, limit=3):
+    """자치구가 속한 권역의 대표 역 목록(최대 limit개)을 돌려준다."""
+    region = GU_REGION.get(gu_slug)
+    if not region:
+        return []
+    return _STATION_GROUP_MAP.get(region, [])[:limit]
+
+
+def station_groups_html():
+    """모든 지하철역을 권역별로 묶어 본문에 넣을 링크 블록을 생성한다."""
+    blocks = []
+    for region, stations in STATION_GROUPS:
+        links = "".join(
+            f'<li><a href="{station_url(slug)}">{name}</a></li>'
+            for name, slug in stations
+        )
+        blocks.append(
+            f'<div class="station-region">'
+            f'<p class="station-region-title">{region}</p>'
+            f'<ul class="card-grid station-region-grid">{links}</ul></div>'
+        )
+    return f'<div class="station-region-wrap">{"".join(blocks)}</div>'
+
+
+def related_links_html(title, pairs):
+    """롱테일 키워드 앵커로 구성한 내부링크 블록.
+    pairs: [(앵커텍스트, href), ...] — href 가 없으면(None) 건너뛴다."""
+    items = "".join(
+        f'<li><a href="{href}">{anchor}</a></li>'
+        for anchor, href in pairs if href
+    )
+    if not items:
+        return ""
+    return (
+        f'<section class="related-links"><h2>{title}</h2>'
+        f'<ul class="related-links-list">{items}</ul></section>'
+    )
+
+
 # 자치구별 통합 행정동 (번호 동은 대표 동으로 통합)
 DISTRICT_DONGS = {
     "gangnam-gu-chuljangmassage": ["신사동", "논현동", "압구정동", "청담동", "삼성동", "대치동", "역삼동", "도곡동", "개포동", "일원동", "수서동", "세곡동"],
@@ -169,6 +340,108 @@ def dong_nav_section(gu_slug, gu_name):
     )
 
 
+_HUB = "/seoul-chuljangmassage/"
+
+
+def _pick2(items, seed):
+    """리스트에서 seed 기반으로 서로 다른 두 항목을 고른다."""
+    if not items:
+        return []
+    if len(items) == 1:
+        return [items[0]]
+    i = seed % len(items)
+    j = (seed // len(items) + 1) % len(items)
+    if j == i:
+        j = (i + 1) % len(items)
+    return [items[i], items[j]]
+
+
+def dong_related_block(gu_slug, gu_name, dong_name):
+    """행정동 페이지용 롱테일 키워드 내부링크 블록.
+    같은 구의 다른 동·권역 역세권·자치구·허브로 연결한다."""
+    seed = sum(ord(c) for c in (dong_name + gu_slug))
+    pages = _DONG_LINKS.get(gu_slug, {})
+    siblings = sorted((d, s) for d, s in pages.items() if d != dong_name)
+    sib = _pick2(siblings, seed)
+    sts = gu_stations(gu_slug, 3)
+    st = _pick2(sts, seed)
+
+    pairs = [(f"{gu_name} 출장마사지·홈타이 전체 안내", district_url(gu_slug))]
+    sib_anchors = ["{0} 출장마사지 방문 예약 안내", "{0} 홈타이 당일 예약 가능 지역"]
+    for idx, (d, s) in enumerate(sib):
+        pairs.append((sib_anchors[idx].format(d), dong_url(s)))
+    st_anchors = ["{0} 출장마사지·홈타이 방문 안내", "{0} 근처 출장 홈타이 예약 정보"]
+    for idx, (n, s) in enumerate(st):
+        pairs.append((st_anchors[idx].format(n), station_url(s)))
+    pairs.append(("서울 전지역 방문 출장마사지·홈타이 예약 안내", _HUB))
+    return related_links_html(
+        f"{dong_name} 함께 보면 좋은 출장마사지·홈타이 안내", pairs
+    )
+
+
+def district_related_block(gu_slug, gu_name):
+    """자치구 페이지용 롱테일 키워드 내부링크 블록(권역 역세권 + 허브)."""
+    pairs = [
+        (f"{n} 출장마사지·홈타이 방문 안내", station_url(s))
+        for n, s in gu_stations(gu_slug, 4)
+    ]
+    pairs.append((f"{gu_name} 행정동별 출장마사지 방문 가능 지역", _HUB + "#districts"))
+    pairs.append(("서울 전지역 출장마사지·홈타이 예약 안내", _HUB))
+    return related_links_html(
+        f"{gu_name} 주변 역세권 출장마사지·홈타이 안내", pairs
+    )
+
+
+# 생활권 slug → 대표 역(롱테일 내부링크용)
+ZONE_STATIONS = {
+    "gangnam-zone-chuljangmassage": ["강남역", "역삼역", "신논현역"],
+    "jamsil-songpa-zone-chuljangmassage": ["잠실역", "문정역", "가락시장역"],
+    "hongdae-hapjeong-zone-chuljangmassage": ["홍대입구역", "합정역", "망원역"],
+    "yeouido-zone-chuljangmassage": ["여의도역", "여의나루역", "영등포역"],
+    "seoul-yongsan-zone-chuljangmassage": ["서울역", "용산역", "이촌역"],
+    "jongno-gwanghwamun-zone-chuljangmassage": ["종로3가역", "시청역", "을지로입구역"],
+    "seongsu-wangsimni-zone-chuljangmassage": ["성수역", "왕십리역", "건대입구역"],
+    "guro-digital-zone-chuljangmassage": ["구로디지털단지역", "가산디지털단지역", "신도림역"],
+    "gimpo-magok-zone-chuljangmassage": ["김포공항역", "마곡역", "발산역"],
+    "nowon-sanggye-zone-chuljangmassage": ["노원역", "중계역", "수유역"],
+}
+_STATION_NAME_TO_SLUG = {n: s for _, sts in STATION_GROUPS for n, s in sts}
+
+
+def zone_related_block(zone_slug, zone_name):
+    """생활권 페이지용 롱테일 키워드 내부링크 블록."""
+    pairs = []
+    for n in ZONE_STATIONS.get(zone_slug, []):
+        s = _STATION_NAME_TO_SLUG.get(n)
+        if s:
+            pairs.append((f"{n} 출장마사지·홈타이 방문 안내", station_url(s)))
+    pairs.append(("서울 자치구별 출장마사지 방문 가능 지역", _HUB + "#districts"))
+    pairs.append(("서울 전지역 방문 출장마사지·홈타이 예약 안내", _HUB))
+    return related_links_html(
+        f"{zone_name} 함께 보면 좋은 출장마사지·홈타이 안내", pairs
+    )
+
+
+def station_related_block(station_slug, station_name):
+    """역세권 페이지용 롱테일 키워드 내부링크 블록(같은 권역 역 + 허브)."""
+    region, members = None, []
+    for rname, sts in STATION_GROUPS:
+        if any(s == station_slug for _, s in sts):
+            region, members = rname, sts
+            break
+    seed = sum(ord(c) for c in station_slug)
+    sib = [(n, s) for n, s in members if s != station_slug]
+    sib = _pick2(sib, seed) if len(sib) > 2 else sib
+    pairs = [
+        (f"{n} 출장마사지 홈타이 방문 예약", station_url(s)) for n, s in sib
+    ]
+    pairs.append((f"{region} 전체 역세권 출장마사지 안내", _HUB + "#stations"))
+    pairs.append(("서울 전지역 방문 출장마사지·홈타이 예약 안내", _HUB))
+    return related_links_html(
+        f"{station_name} 함께 보면 좋은 출장마사지·홈타이 안내", pairs
+    )
+
+
 # 상단 메뉴
 NAV = [
     ("홈", "/seoul-chuljangmassage/", []),
@@ -183,7 +456,7 @@ NAV = [
     ]),
     ("역세권별 안내", "/seoul-chuljangmassage/#stations", [
         (name, station_url(slug)) for slug, name in STATIONS_MENU
-    ]),
+    ] + [("＋ 서울 전체 역세권 보기", "/seoul-chuljangmassage/#stations")]),
     ("생활권별 안내", "/seoul-chuljangmassage/#zones", [
         (name, zone_url(slug)) for slug, name in ZONES
     ]),

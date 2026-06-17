@@ -6,7 +6,10 @@ from .site import register_dong_pages
 
 register_dong_pages(dongs_gen.ALL_DONG_SLUGS)
 
-# 2) 나머지 페이지 모듈 import
+# 레지스트리가 모두 채워진 뒤 자동 생성 페이지를 만든다(내부링크 sibling 해석).
+dongs_gen.PAGES = dongs_gen.build()
+
+# 2) 나머지 페이지 모듈 import (dongs/districts 는 등록된 레지스트리를 사용)
 from . import main, districts, dongs, stations, zones, info
 
 PAGES = (

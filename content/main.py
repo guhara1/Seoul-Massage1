@@ -1,15 +1,12 @@
 from .site import (DISTRICTS, BASE_URL, BRAND, PHONE, PHONE_DISPLAY, STATIONS_MENU, ZONES,
-                   district_url, station_url, zone_url)
+                   district_url, station_url, zone_url, station_groups_html)
 from .pricing import PRICING
+
+_STATION_GROUPS_HTML = station_groups_html()
 
 _DISTRICT_CARDS = "".join(
     f'<li><a href="{district_url(slug)}">{name}</a></li>'
     for slug, name in DISTRICTS
-)
-
-_STATION_CARDS = "".join(
-    f'<li><a href="{station_url(slug)}">{name}</a></li>'
-    for slug, name in STATIONS_MENU
 )
 
 _ZONE_CARDS = "".join(
@@ -140,7 +137,8 @@ _BODY = f"""
 <section id="stations">
 <h2>강남역·잠실역·홍대입구역·여의도역 핵심 역세권 안내</h2>
 <p>서울특별시에는 1~9호선과 신분당선, 공항철도, 경의중앙선, 수인분당선, 경춘선 등 다양한 지하철 노선이 운영됩니다. 역세권 기준으로 위치를 파악하는 분을 위해 환승역 단위로 단일 URL 원칙을 적용합니다. 강남역은 2호선·신분당선 환승역으로 강남구와 서초구의 중심 거점이며, 잠실역은 2호선·8호선 환승역으로 송파구 잠실·문정 생활권의 핵심입니다. 홍대입구역은 2호선·공항철도·경의중앙선 환승역으로 마포구 서교·합정 생활권을 커버하며, 여의도역은 5호선·9호선 환승역으로 영등포구 금융업무지구 방문 수요를 담당합니다. 같은 역에 여러 노선이 지나더라도 역명 하나의 URL로 통합 운영하므로 노선별로 페이지가 나뉘지 않습니다.</p>
-<ul class="card-grid">{_STATION_CARDS}</ul>
+<p>아래는 서울 전역의 역세권을 권역별로 묶은 전체 목록입니다. 강남권·서초권·송파강동권부터 도심권·용산권·강북노원도봉권까지, 방문을 원하시는 역을 눌러 해당 역세권 출장마사지·홈타이 안내를 확인하세요.</p>
+{_STATION_GROUPS_HTML}
 <p>역세권 페이지는 해당 역 주변 자치구·행정동, 이동 동선, 주요 이용 시간대, 예약 전 확인사항을 역마다 고유하게 안내합니다. 어떤 역 기준으로 문의하셔도 자택이나 숙소로 직접 방문하므로 역에서 만나거나 이동하는 절차는 없습니다.</p>
 </section>
 

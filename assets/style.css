@@ -405,6 +405,37 @@ strong { color: var(--gold-soft); font-weight: 700; }
   background: linear-gradient(180deg, #13203a, var(--panel-2));
 }
 
+/* 권역별 역세권 목록 */
+.station-region-wrap { margin: 18px 0 8px; }
+.station-region { margin: 0 0 18px; }
+.station-region-title {
+  font-weight: 700; color: var(--gold-soft, #e7c873);
+  font-size: 1.02rem; margin: 0 0 8px;
+  padding-left: 12px; border-left: 3px solid var(--gold, #c8a85a);
+}
+.station-region-grid { margin: 0; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); }
+
+/* 롱테일 내부링크 블록 */
+.related-links {
+  background: var(--panel-2); border: 1px solid var(--line);
+  border-radius: 12px; padding: 18px 22px; margin: 22px 0;
+}
+.related-links h2 { font-size: 1.2rem; margin: 0 0 12px; }
+.related-links-list {
+  display: grid; gap: 10px; list-style: none; margin: 0; padding: 0;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+.related-links-list li { margin: 0; }
+.related-links-list a {
+  display: block; padding: 11px 14px; border-radius: 9px;
+  background: rgba(255,255,255,0.02); border: 1px solid var(--line);
+  color: var(--text); font-size: 0.92rem; transition: 0.18s;
+}
+.related-links-list a:hover {
+  border-color: var(--gold); color: var(--gold-soft);
+  background: linear-gradient(180deg, #13203a, var(--panel-2));
+}
+
 /* 안내 박스 */
 .info-box {
   background: var(--panel-2); border: 1px solid var(--line-gold);
