@@ -135,21 +135,36 @@ DONG_PAGES = {
 }
 
 
+# 행정동 → 페이지 slug 링크 레지스트리.
+# 기본값은 수기 작성 페이지(DONG_PAGES)이며, 자동 생성 모듈이
+# register_dong_pages() 로 나머지 동을 병합한다(순환 import 방지).
+_DONG_LINKS = {gu: dict(m) for gu, m in DONG_PAGES.items()}
+
+
+def register_dong_pages(mapping):
+    """자치구 slug → {동명: 페이지 slug} 매핑을 링크 레지스트리에 병합한다."""
+    for gu_slug, dong_map in mapping.items():
+        _DONG_LINKS.setdefault(gu_slug, {})
+        for dong, slug in dong_map.items():
+            # 수기 페이지가 우선(이미 등록된 동은 덮어쓰지 않음)
+            _DONG_LINKS[gu_slug].setdefault(dong, slug)
+
+
 def dong_nav_section(gu_slug, gu_name):
-    """자치구 페이지에 들어갈 통합 행정동 안내 목록을 생성한다."""
+    """자치구 페이지에 들어갈 통합 행정동 안내 목록을 생성한다(ㄱㄴㄷ 정렬)."""
     dongs = DISTRICT_DONGS.get(gu_slug, [])
     if not dongs:
         return ""
-    pages = DONG_PAGES.get(gu_slug, {})
+    pages = _DONG_LINKS.get(gu_slug, {})
     items = []
-    for d in dongs:
+    for d in sorted(dongs):
         if d in pages:
             items.append(f'<li><a href="{dong_url(pages[d])}">{d}</a></li>')
         else:
             items.append(f'<li><span>{d}</span></li>')
     return (
         f'<section class="district-dong-nav"><h2>{gu_name} 행정동 안내</h2>'
-        f'<p>{gu_name}의 주요 행정동입니다. 1동·2동 등 번호로 나뉜 행정동은 대표 동 하나로 통합해 표시했으며, {gu_name} 전 행정동에 방문이 가능합니다. 상세 안내 페이지가 있는 동은 눌러서 확인하실 수 있습니다.</p>'
+        f'<p>{gu_name}의 행정동을 ㄱㄴㄷ 순으로 정리했습니다. 1동·2동 등 번호로 나뉜 행정동은 대표 동 하나로 통합해 표시했으며, {gu_name} 전 행정동에 방문이 가능합니다. 각 동을 누르면 지역별 상세 안내를 확인하실 수 있습니다.</p>'
         f'<ul class="card-grid dong-nav-grid">{"".join(items)}</ul></section>'
     )
 
