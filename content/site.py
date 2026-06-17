@@ -91,6 +91,69 @@ def dong_url(slug):
     return f"/seoul/{slug}-chuljangmassage/"
 
 
+# 자치구별 통합 행정동 (번호 동은 대표 동으로 통합)
+DISTRICT_DONGS = {
+    "gangnam-gu-chuljangmassage": ["신사동", "논현동", "압구정동", "청담동", "삼성동", "대치동", "역삼동", "도곡동", "개포동", "일원동", "수서동", "세곡동"],
+    "gangdong-gu-chuljangmassage": ["천호동", "성내동", "길동", "둔촌동", "암사동", "명일동", "고덕동", "상일동", "강일동"],
+    "gangbuk-gu-chuljangmassage": ["미아동", "번동", "수유동", "우이동", "인수동", "삼양동"],
+    "gangseo-gu-chuljangmassage": ["화곡동", "마곡동", "발산동", "등촌동", "염창동", "가양동", "공항동", "방화동", "우장산동"],
+    "gwanak-gu-chuljangmassage": ["봉천동", "신림동", "남현동", "낙성대동", "서원동", "미성동", "난곡동"],
+    "gwangjin-gu-chuljangmassage": ["구의동", "자양동", "화양동", "광장동", "중곡동", "능동", "군자동"],
+    "guro-gu-chuljangmassage": ["구로동", "신도림동", "가리봉동", "고척동", "개봉동", "오류동", "온수동", "항동", "천왕동"],
+    "geumcheon-gu-chuljangmassage": ["가산동", "독산동", "시흥동"],
+    "nowon-gu-chuljangmassage": ["상계동", "중계동", "하계동", "월계동", "공릉동"],
+    "dobong-gu-chuljangmassage": ["창동", "쌍문동", "방학동", "도봉동"],
+    "dongdaemun-gu-chuljangmassage": ["전농동", "답십리동", "장안동", "청량리동", "회기동", "휘경동", "이문동", "제기동", "용두동", "신설동"],
+    "dongjak-gu-chuljangmassage": ["노량진동", "상도동", "흑석동", "사당동", "대방동", "신대방동", "동작동", "본동"],
+    "mapo-gu-chuljangmassage": ["공덕동", "아현동", "도화동", "용강동", "대흥동", "염리동", "신수동", "서교동", "합정동", "망원동", "연남동", "성산동", "상암동"],
+    "seodaemun-gu-chuljangmassage": ["충정로", "북아현동", "신촌동", "대현동", "연희동", "홍제동", "홍은동", "남가좌동", "북가좌동", "천연동"],
+    "seocho-gu-chuljangmassage": ["서초동", "잠원동", "반포동", "방배동", "양재동", "내곡동", "우면동"],
+    "seongdong-gu-chuljangmassage": ["왕십리동", "행당동", "금호동", "옥수동", "성수동", "응봉동", "마장동", "사근동", "용답동", "송정동"],
+    "seongbuk-gu-chuljangmassage": ["성북동", "돈암동", "삼선동", "안암동", "보문동", "정릉동", "길음동", "종암동", "월곡동", "장위동", "석관동"],
+    "songpa-gu-chuljangmassage": ["잠실동", "신천동", "송파동", "석촌동", "삼전동", "가락동", "문정동", "장지동", "거여동", "마천동", "방이동", "오금동", "풍납동"],
+    "yangcheon-gu-chuljangmassage": ["목동", "신정동", "신월동"],
+    "yeongdeungpo-gu-chuljangmassage": ["영등포동", "여의도동", "당산동", "문래동", "양평동", "신길동", "대림동", "도림동"],
+    "yongsan-gu-chuljangmassage": ["한강로동", "이태원동", "한남동", "청파동", "효창동", "용문동", "원효로동", "이촌동", "서빙고동", "보광동", "남영동", "후암동", "용산동"],
+    "eunpyeong-gu-chuljangmassage": ["불광동", "응암동", "녹번동", "갈현동", "구산동", "대조동", "역촌동", "신사동", "증산동", "수색동", "진관동"],
+    "jongno-gu-chuljangmassage": ["청운효자동", "사직동", "삼청동", "부암동", "평창동", "무악동", "교남동", "가회동", "종로1·2·3·4가동", "종로5·6가동", "이화동", "혜화동", "창신동", "숭인동"],
+    "jung-gu-chuljangmassage": ["소공동", "회현동", "명동", "필동", "장충동", "광희동", "을지로동", "신당동", "다산동", "약수동", "청구동", "동화동", "황학동", "중림동"],
+    "jungnang-gu-chuljangmassage": ["면목동", "상봉동", "중화동", "묵동", "망우동", "신내동"],
+}
+
+# 상세 페이지가 있는 행정동 (자치구 slug → {행정동명: 페이지 slug})
+DONG_PAGES = {
+    "gangnam-gu-chuljangmassage": {"역삼동": "yeoksam-dong", "삼성동": "samseong-dong", "청담동": "cheongdam-dong", "논현동": "nonhyeon-dong", "대치동": "daechi-dong"},
+    "songpa-gu-chuljangmassage": {"잠실동": "jamsil-dong", "문정동": "munjeong-dong", "가락동": "garak-dong", "방이동": "bangi-dong"},
+    "mapo-gu-chuljangmassage": {"서교동": "seogyeo-dong", "합정동": "hapjeong-dong", "공덕동": "gongdeok-dong", "상암동": "sangam-dong"},
+    "yeongdeungpo-gu-chuljangmassage": {"여의도동": "yeouido-dong", "영등포동": "yeongdeungpo-dong", "당산동": "dangsan-dong"},
+    "yongsan-gu-chuljangmassage": {"한강로동": "hangang-ro-dong", "이태원동": "itaewon-dong", "한남동": "hannam-dong"},
+    "seongdong-gu-chuljangmassage": {"성수동": "seongsu-dong", "왕십리동": "wangsimni-dong", "옥수동": "oksu-dong"},
+    "seocho-gu-chuljangmassage": {"서초동": "seocho-dong", "반포동": "banpo-dong", "방배동": "bangbae-dong"},
+    "gangseo-gu-chuljangmassage": {"마곡동": "magok-dong", "화곡동": "hwagok-dong"},
+    "nowon-gu-chuljangmassage": {"상계동": "sanggye-dong", "중계동": "junggye-dong"},
+    "yangcheon-gu-chuljangmassage": {"목동": "mokdong"},
+}
+
+
+def dong_nav_section(gu_slug, gu_name):
+    """자치구 페이지에 들어갈 통합 행정동 안내 목록을 생성한다."""
+    dongs = DISTRICT_DONGS.get(gu_slug, [])
+    if not dongs:
+        return ""
+    pages = DONG_PAGES.get(gu_slug, {})
+    items = []
+    for d in dongs:
+        if d in pages:
+            items.append(f'<li><a href="{dong_url(pages[d])}">{d}</a></li>')
+        else:
+            items.append(f'<li><span>{d}</span></li>')
+    return (
+        f'<section class="district-dong-nav"><h2>{gu_name} 행정동 안내</h2>'
+        f'<p>{gu_name}의 주요 행정동입니다. 1동·2동 등 번호로 나뉜 행정동은 대표 동 하나로 통합해 표시했으며, {gu_name} 전 행정동에 방문이 가능합니다. 상세 안내 페이지가 있는 동은 눌러서 확인하실 수 있습니다.</p>'
+        f'<ul class="card-grid dong-nav-grid">{"".join(items)}</ul></section>'
+    )
+
+
 # 상단 메뉴
 NAV = [
     ("홈", "/seoul-chuljangmassage/", []),

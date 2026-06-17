@@ -384,13 +384,19 @@ strong { color: var(--gold-soft); font-weight: 700; }
   list-style: none; margin-left: 0;
 }
 .card-grid li { margin: 0; }
-.card-grid a {
+.card-grid a,
+.card-grid li > span {
   display: block; padding: 17px 14px; text-align: center;
   background: var(--panel-2);
   border: 1px solid var(--line);
   border-radius: 12px; color: var(--text); font-size: 0.95rem;
   letter-spacing: 0.03em;
   transition: 0.18s;
+}
+.card-grid li > span {
+  color: var(--text-dim, #9aa6bd);
+  background: transparent;
+  cursor: default;
 }
 .card-grid a:hover {
   border-color: var(--gold); color: var(--gold-soft);

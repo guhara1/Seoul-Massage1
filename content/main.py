@@ -3,17 +3,17 @@ from .site import (DISTRICTS, BASE_URL, BRAND, PHONE, PHONE_DISPLAY, STATIONS_ME
 from .pricing import PRICING
 
 _DISTRICT_CARDS = "".join(
-    f'<li><a href="{district_url(slug)}">{name} 출장마사지</a></li>'
+    f'<li><a href="{district_url(slug)}">{name}</a></li>'
     for slug, name in DISTRICTS
 )
 
 _STATION_CARDS = "".join(
-    f'<li><a href="{station_url(slug)}">{name} 출장마사지</a></li>'
+    f'<li><a href="{station_url(slug)}">{name}</a></li>'
     for slug, name in STATIONS_MENU
 )
 
 _ZONE_CARDS = "".join(
-    f'<li><a href="{zone_url(slug)}">{name} 출장마사지</a></li>'
+    f'<li><a href="{zone_url(slug)}">{name}</a></li>'
     for slug, name in ZONES
 )
 
@@ -201,5 +201,6 @@ PAGE = {
     "desc": "서울 출장마사지·홈타이 예약 전 자치구, 역세권, 이용 기준을 정리했습니다.",
     "h1": "서울 출장마사지 · 서울특별시 홈타이 지역별 예약 안내",
     "extra_head": _JSONLD,
-    "body": _HERO + _BODY + PRICING + _CTA,
+    "hero": _HERO,
+    "body": _BODY + PRICING + _CTA,
 }
