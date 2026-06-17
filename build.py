@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""간다GO 경기 광주 출장마사지 — 정적 사이트 빌드 스크립트.
+"""간다GO 서울 출장마사지 — 정적 사이트 빌드 스크립트.
 
 content/ 패키지의 페이지 정의를 읽어 정적 HTML을 생성한다.
 
@@ -240,7 +240,7 @@ def render_page(page: dict) -> str:
   <div class="header-top">
     <div class="header-inner">
       <a class="brand" href="/"><span class="brand-mark">{BRAND_MARK}</span> <span class="brand-text">{BRAND}</span></a>
-      <p class="header-tagline"><span class="tag-gem">◆</span> 경기 광주 전지역 방문 관리 <span class="tag-gem">◆</span> 24시간 상담</p>
+      <p class="header-tagline"><span class="tag-gem">◆</span> 서울특별시 전지역 방문 관리 <span class="tag-gem">◆</span> 24시간 상담</p>
       <a class="header-call" href="tel:{PHONE}"><span class="call-label">예약전화</span> {PHONE_DISPLAY}</a>
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false"><span></span><span></span><span></span></button>
     </div>
@@ -261,30 +261,30 @@ def render_page(page: dict) -> str:
   <div class="container footer-grid">
     <div class="footer-col footer-about">
       <p class="footer-brand">{BRAND}</p>
-      <p class="footer-desc">경기도 광주시 전지역 방문 출장마사지·홈타이 안내 사이트입니다. 모든 서비스는 안내된 관리 범위와 위생·안전 기준 안에서만 제공됩니다.</p>
+      <p class="footer-desc">서울특별시 전지역 방문 출장마사지·홈타이 안내 사이트입니다. 모든 서비스는 안내된 관리 범위와 위생·안전 기준 안에서만 제공됩니다.</p>
       <address class="footer-contact">
         <span class="footer-contact-row"><span class="footer-label">예약전화</span> <a href="tel:{PHONE}">{PHONE_DISPLAY}</a></span>
         <span class="footer-contact-row"><span class="footer-label">상담시간</span> 연중무휴 24시간</span>
-        <span class="footer-contact-row"><span class="footer-label">서비스 지역</span> 경기도 광주시 전지역</span>
+        <span class="footer-contact-row"><span class="footer-label">서비스 지역</span> 서울특별시 전지역</span>
       </address>
     </div>
     <nav class="footer-col" aria-label="지역 안내">
-      <p class="footer-title">지역 안내</p>
+      <p class="footer-title">자치구 안내</p>
       <ul>
-        <li><a href="/gwangju-gyeonggi/gyeongan-dong-chuljangmassage/">경안동 출장마사지</a></li>
-        <li><a href="/gwangju-gyeonggi/opo-dong-chuljangmassage/">오포동 출장마사지</a></li>
-        <li><a href="/gwangju-gyeonggi/gonjiam-eup-chuljangmassage/">곤지암읍 출장마사지</a></li>
-        <li><a href="/gwangju-gyeonggi/chowol-eup-chuljangmassage/">초월읍 출장마사지</a></li>
-        <li><a href="/gwangju-gyeonggi/gwangnam-dong-chuljangmassage/">광남동 출장마사지</a></li>
+        <li><a href="/seoul/gangnam-gu-chuljangmassage/">강남구 출장마사지</a></li>
+        <li><a href="/seoul/mapo-gu-chuljangmassage/">마포구 출장마사지</a></li>
+        <li><a href="/seoul/yongsan-gu-chuljangmassage/">용산구 출장마사지</a></li>
+        <li><a href="/seoul/seongdong-gu-chuljangmassage/">성동구 출장마사지</a></li>
+        <li><a href="/seoul/seocho-gu-chuljangmassage/">서초구 출장마사지</a></li>
       </ul>
     </nav>
     <nav class="footer-col" aria-label="지하철역 안내">
       <p class="footer-title">역세권 안내</p>
       <ul>
-        <li><a href="/gwangju-gyeonggi/gyeonggi-gwangju-station-chuljangmassage/">경기광주역</a></li>
-        <li><a href="/gwangju-gyeonggi/samdong-station-chuljangmassage/">삼동역</a></li>
-        <li><a href="/gwangju-gyeonggi/chowol-station-chuljangmassage/">초월역</a></li>
-        <li><a href="/gwangju-gyeonggi/gonjiam-station-chuljangmassage/">곤지암역</a></li>
+        <li><a href="/seoul/gangnam-station-chuljangmassage/">강남역</a></li>
+        <li><a href="/seoul/hongik-univ-station-chuljangmassage/">홍대입구역</a></li>
+        <li><a href="/seoul/yeouido-station-chuljangmassage/">여의도역</a></li>
+        <li><a href="/seoul/jamsil-station-chuljangmassage/">잠실역</a></li>
       </ul>
     </nav>
     <nav class="footer-col" aria-label="이용 안내">
@@ -301,7 +301,7 @@ def render_page(page: dict) -> str:
   <div class="footer-bottom">
     <div class="container footer-bottom-inner">
       <p class="footer-copy">&copy; {BRAND}. All rights reserved.</p>
-      <p class="footer-note">경기도 광주시(광주광역시 아님)를 안내하는 건전한 방문 관리 사이트이며, 불법적인 요청은 어떤 경우에도 응하지 않습니다.</p>
+      <p class="footer-note">서울특별시 전지역을 안내하는 건전한 방문 관리 사이트이며, 불법적인 요청은 어떤 경우에도 응하지 않습니다.</p>
       <a class="footer-made" href="tel:{PHONE}" rel="nofollow">예약문의 {PHONE_DISPLAY}</a>
     </div>
   </div>
