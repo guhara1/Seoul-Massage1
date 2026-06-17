@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.ganda-go.example.com/sitemap.xml
+Sitemap: https://seoul-massage1.pages.dev/sitemap.xml

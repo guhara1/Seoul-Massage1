@@ -1,5 +1,5 @@
 # 사이트 공통 설정
-BASE_URL = "https://www.ganda-go.example.com"
+BASE_URL = "https://seoul-massage1.pages.dev"
 
 BRAND = "간다GO"
 BRAND_MARK = "GO"

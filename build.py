@@ -355,6 +355,61 @@ def build() -> None:
     # .nojekyll (GitHub Pages)
     open(os.path.join(ROOT, ".nojekyll"), "w").close()
 
+    # 루트 index.html — 메인 허브(/seoul-chuljangmassage/)로 리다이렉트
+    main_url = "/seoul-chuljangmassage/"
+    with open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8") as f:
+        f.write(
+            "<!DOCTYPE html>\n"
+            '<html lang="ko">\n<head>\n'
+            '<meta charset="utf-8">\n'
+            '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            f'<title>{BRAND} 서울 출장마사지·홈타이 안내</title>\n'
+            f'<link rel="canonical" href="{BASE_URL.rstrip("/")}{main_url}">\n'
+            f'<meta http-equiv="refresh" content="0; url={main_url}">\n'
+            f'<script>location.replace("{main_url}");</script>\n'
+            "</head>\n<body>\n"
+            f'<p><a href="{main_url}">서울 출장마사지 안내 페이지로 이동</a></p>\n'
+            "</body>\n</html>\n"
+        )
+
+    # 404.html — 존재하지 않는 페이지 안내
+    nf_links = "\n".join(
+        f'      <li><a href="{href}">{name}</a></li>'
+        for name, href in [
+            ("홈", main_url),
+            ("자치구별 안내", main_url + "#districts"),
+            ("역세권별 안내", main_url + "#stations"),
+            ("생활권별 안내", main_url + "#zones"),
+            ("예약안내", "/reservation/"),
+            ("이용 전 확인사항", "/precautions/"),
+            ("고객센터", "/support/"),
+        ]
+    )
+    with open(os.path.join(ROOT, "404.html"), "w", encoding="utf-8") as f:
+        f.write(
+            "<!DOCTYPE html>\n"
+            '<html lang="ko">\n<head>\n'
+            '<meta charset="utf-8">\n'
+            '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+            f"<title>페이지를 찾을 수 없습니다 | {BRAND} 서울 출장마사지</title>\n"
+            '<meta name="robots" content="noindex">\n'
+            '<link rel="icon" href="/favicon.ico" sizes="48x48">\n'
+            '<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">\n'
+            '<link rel="stylesheet" href="/assets/style.css">\n'
+            "</head>\n<body>\n"
+            '<main class="site-main">\n'
+            '  <div class="container" style="text-align:center; padding-top:80px;">\n'
+            "    <h1>페이지를 찾을 수 없습니다</h1>\n"
+            "    <p>주소가 바뀌었거나 존재하지 않는 페이지입니다.<br>아래 메뉴에서 원하시는 안내를 찾아보세요.</p>\n"
+            '    <ul class="card-grid" style="max-width:680px; margin:30px auto;">\n'
+            f"{nf_links}\n"
+            "    </ul>\n"
+            f'    <p style="margin-top:30px;"><a class="hero-btn primary" href="tel:{PHONE}">📞 {PHONE_DISPLAY}</a></p>\n'
+            "  </div>\n"
+            "</main>\n"
+            "</body>\n</html>\n"
+        )
+
     width = max(len(p) for p, _, _ in report)
     print(f"{'PATH'.ljust(width)}  CHARS  ROBOTS")
     for p, c, r in sorted(report):
