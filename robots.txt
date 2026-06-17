@@ -1,4 +1,14 @@
 User-agent: *
 Allow: /
 
+User-agent: Googlebot
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
+User-agent: bingbot
+Allow: /
+
 Sitemap: https://seoul-massage1.pages.dev/sitemap.xml
+Sitemap: https://seoul-massage1.pages.dev/rss.xml

@@ -1,0 +1,40 @@
+name: 색인 즉시 통보 (IndexNow)
+
+# main 에 푸시될 때마다(=배포될 때마다) 바뀐 페이지를 Bing·Naver·Yandex 에
+# 즉시 색인 통보한다. IndexNow 는 인증 키가 사이트 루트에 게시되어 있어
+# 별도 시크릿이 필요 없다.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/index.html"
+      - "sitemap.xml"
+
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2          # HEAD~1 비교용
+      - name: 바뀐 URL을 IndexNow에 제출
+        run: python3 tools/indexnow.py --changed
+
+  # (선택) 구글 Indexing API 통보 — 서비스계정 시크릿이 설정된 경우에만 실행
+  google-indexing:
+    runs-on: ubuntu-latest
+    if: ${{ vars.ENABLE_GOOGLE_INDEXING == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - run: pip install google-auth
+      - name: 서비스계정 키 작성
+        run: printf '%s' "$GOOGLE_INDEXING_CREDENTIALS" > "$RUNNER_TEMP/sa.json"
+        env:
+          GOOGLE_INDEXING_CREDENTIALS: ${{ secrets.GOOGLE_INDEXING_CREDENTIALS }}
+      - name: 구글 Indexing API 제출
+        run: GOOGLE_APPLICATION_CREDENTIALS="$RUNNER_TEMP/sa.json" python3 tools/google_indexing.py

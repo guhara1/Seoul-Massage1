@@ -14,12 +14,14 @@ import os
 import re
 import shutil
 import sys
+from datetime import datetime, timezone
+from email.utils import format_datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from content import PAGES
 from content.site import (BASE_URL, BRAND, BRAND_MARK, NAV, PHONE,
-                          PHONE_DISPLAY)
+                          PHONE_DISPLAY, INDEXNOW_KEY)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 MIN_INDEX_CHARS = 2000
@@ -228,6 +230,7 @@ def render_page(page: dict) -> str:
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <meta name="theme-color" content="#0a1120">
+<link rel="alternate" type="application/rss+xml" title="{BRAND} 서울 출장마사지·홈타이 안내" href="/rss.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700;900&display=swap" media="print" onload="this.media='all'">
@@ -322,6 +325,11 @@ def render_page(page: dict) -> str:
 def build() -> None:
     report = []
     sitemap_urls = []
+    indexed = []  # (url, title, desc) — 사이트맵·RSS·IndexNow 공통
+
+    base = BASE_URL.rstrip("/")
+    now = datetime.now(timezone.utc)
+    today = now.strftime("%Y-%m-%d")
 
     for page in PAGES:
         path = page["path"]  # "" 또는 "gwangju-gyeonggi/.../" 형태
@@ -334,12 +342,15 @@ def build() -> None:
         chars = text_length(page["body"])
         noindex = page.get("noindex", False) or chars < MIN_INDEX_CHARS
         if not noindex:
-            sitemap_urls.append(BASE_URL.rstrip("/") + "/" + path)
+            url = base + "/" + path
+            sitemap_urls.append(url)
+            indexed.append((url, page.get("title", BRAND), page.get("desc", "")))
         report.append((path or "/", chars, "noindex" if noindex else "index"))
 
-    # sitemap.xml
+    # sitemap.xml (lastmod 포함)
     urls = "\n".join(
-        f"  <url><loc>{u}</loc></url>" for u in sitemap_urls
+        f"  <url><loc>{u}</loc><lastmod>{today}</lastmod></url>"
+        for u in sitemap_urls
     )
     with open(os.path.join(ROOT, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write(
@@ -348,12 +359,44 @@ def build() -> None:
             f"{urls}\n</urlset>\n"
         )
 
-    # robots.txt
+    # rss.xml (피드 기반 색인 발견용)
+    pub = format_datetime(now)
+    items = "\n".join(
+        "  <item>"
+        f"<title>{html.escape(t)}</title>"
+        f"<link>{u}</link>"
+        f"<guid isPermaLink=\"true\">{u}</guid>"
+        f"<description>{html.escape(d)}</description>"
+        f"<pubDate>{pub}</pubDate>"
+        "</item>"
+        for u, t, d in indexed
+    )
+    with open(os.path.join(ROOT, "rss.xml"), "w", encoding="utf-8") as f:
+        f.write(
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<rss version="2.0"><channel>\n'
+            f"<title>{html.escape(BRAND)} 서울 출장마사지·홈타이 안내</title>\n"
+            f"<link>{base}/</link>\n"
+            "<description>서울특별시 25개 자치구·전 역세권 방문 출장마사지·홈타이 안내</description>\n"
+            "<language>ko</language>\n"
+            f"<lastBuildDate>{pub}</lastBuildDate>\n"
+            f"{items}\n</channel></rss>\n"
+        )
+
+    # robots.txt (구글·네이버(Yeti)·빙 허용 + 사이트맵·RSS 노출)
     with open(os.path.join(ROOT, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(
             "User-agent: *\nAllow: /\n\n"
-            f"Sitemap: {BASE_URL.rstrip('/')}/sitemap.xml\n"
+            "User-agent: Googlebot\nAllow: /\n\n"
+            "User-agent: Yeti\nAllow: /\n\n"
+            "User-agent: bingbot\nAllow: /\n\n"
+            f"Sitemap: {base}/sitemap.xml\n"
+            f"Sitemap: {base}/rss.xml\n"
         )
+
+    # IndexNow 키 파일 (Bing·Naver·Yandex 즉시 색인 통보)
+    with open(os.path.join(ROOT, f"{INDEXNOW_KEY}.txt"), "w", encoding="utf-8") as f:
+        f.write(INDEXNOW_KEY + "\n")
 
     # .nojekyll (GitHub Pages)
     open(os.path.join(ROOT, ".nojekyll"), "w").close()

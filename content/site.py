@@ -6,6 +6,10 @@ BRAND_MARK = "GO"
 PHONE = "0508-202-4719"
 PHONE_DISPLAY = "0508-202-4719"
 
+# IndexNow 키 (Bing·Naver·Yandex 즉시 색인 통보용)
+# 루트에 {INDEXNOW_KEY}.txt 파일로도 게시된다.
+INDEXNOW_KEY = "190de2caf44fe54bea9205709710121d"
+
 # 25개 자치구 (slug, 한글명)
 DISTRICTS = [
     ("gangnam-gu-chuljangmassage", "강남구"),
